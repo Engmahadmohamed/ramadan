@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramadan Gift Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .admin-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .user-list {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .user-list th, .user-list td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .user-list th {
+            background: var(--primary-color);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .user-list tr:hover {
+            background: #f5f5f5;
+        }
+        .user-filter {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .user-filter input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        .add-gift-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+        .delete-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        .success-message {
+            background: #2ecc71;
+            color: white;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="adminPanel" class="admin-container">
+        <div class="admin-header">
+            <h1>Admin Panel</h1>
+        </div>
+
+        <div class="admin-grid">
+            <div class="stat-card">
+                <h3 id="totalUsers">0</h3>
+                <p>Total Users</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalReveals">0</h3>
+                <p>Gift Reveals</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalShares">0</h3>
+                <p>Total Shares</p>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h2>Registered Users</h2>
+            <div class="user-filter">
+                <input type="text" id="userSearch" placeholder="Search by phone number..." oninput="filterUsers()">
+            </div>
+            <table class="user-list">
+                <thead>
+                    <tr>
+                        <th>Phone Number</th>
+                        <th>Registration Date</th>
+                        <th>Shares</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <!-- User data will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="config.js"></script>
+    <script src="init-admin.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

