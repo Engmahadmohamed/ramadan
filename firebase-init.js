@@ -1,9 +1,4 @@
-// Import Firebase SDK
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-
-// Firebase configuration
+// Firebase initialization and configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDc6Dc8aqsFTf3ll0OZkN8Fwv2t-e4Y80w",
     authDomain: "ramadan-a7532.firebaseapp.com",
@@ -15,11 +10,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
-// Initialize Firebase services
-const database = getDatabase(app);
-const auth = getAuth(app);
+// Initialize services
+const database = firebase.database();
+const auth = firebase.auth();
 
 // Set up database error handling
 database.ref('.info/connected').on('value', (snapshot) => {
@@ -31,9 +26,5 @@ database.ref('.info/connected').on('value', (snapshot) => {
 });
 
 // Export initialized services
-export { app, database, auth };
-const database = getDatabase(app);
-const auth = getAuth(app);
-
-// Export initialized services
-export { app, database, auth };
+window.database = database;
+window.auth = auth;

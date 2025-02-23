@@ -1,6 +1,27 @@
-// Initialize gifts from Firebase
+// Initialize Firebase services and variables
 let gifts = [];
-database.ref('gifts').on('value', snapshot => {
+let retryCount = 0;
+const maxRetries = 3;
+let currentUser = null;
+
+// Referral system variables
+const baseUrl = 'https://ramadan-eta.vercel.app';
+let referralCode = null;
+
+// Get referral code from URL if exists
+function getReferralCode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('ref');
+}
+
+// Generate unique referral link
+function generateReferralLink(userId) {
+    return `${baseUrl}?ref=${userId}`;
+}
+
+// Initialize gifts from Firebase with error handling and retry logic
+function initializeGifts() {
+    database.ref('gifts').on('value', snapshot => {
     const giftsData = snapshot.val();
     gifts = giftsData || [
         { id: 1, adContent: 'Special Ramadan Offer 1' },
@@ -15,6 +36,19 @@ database.ref('gifts').on('value', snapshot => {
         giftsGrid.innerHTML = '';
         generateGiftBoxes();
     }
+}, error => {
+    console.error('Error fetching gifts:', error);
+    if (retryCount < maxRetries) {
+        retryCount++;
+        console.log(`Retrying connection (${retryCount}/${maxRetries})...`);
+        setTimeout(initializeGifts, 2000 * retryCount);
+    } else {
+        showError('Unable to connect to the server. Please check your internet connection and try again.');
+    }
+});
+}
+
+initializeGifts();
 });
 
 // DOM Elements
@@ -62,8 +96,36 @@ function showAllAds() {
     });
 }
 
-// Track WhatsApp shares
+// Track WhatsApp shares and referrals
 let whatsAppShareCount = 0;
+
+// Handle referral tracking
+function handleReferral() {
+    const referrerCode = getReferralCode();
+    if (referrerCode) {
+        database.ref(`users/${referrerCode}/shares`).transaction(shares => (shares || 0) + 1);
+    }
+}
+
+// Share referral link
+function shareReferralLink(platform) {
+    if (!currentUser) return;
+    
+    const referralLink = generateReferralLink(currentUser.uid);
+    const message = `Join me in celebrating Ramadan and get a chance to win $100! Click here: ${referralLink}`;
+    
+    switch(platform) {
+        case 'whatsapp':
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`);
+            break;
+        case 'facebook':
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`);
+            break;
+        case 'telegram':
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(message)}`);
+            break;
+    }
+}
 
 // User verification
 function verifyPhone() {
